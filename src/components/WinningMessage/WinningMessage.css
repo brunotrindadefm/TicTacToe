@@ -1,0 +1,40 @@
+.winning-message {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0.8);
+    flex-direction: column;
+    z-index: 2;
+}
+
+.winning-message button {
+    font-size: 2.5rem;
+    background-color: rgb(81, 161, 81);
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    margin-top: 1.6rem;
+    color: #fff;
+}
+.winning-message button:hover {
+    color: rgb(81, 161, 81);
+    background-color: #fff;
+}
+
+.winning-message p {
+    color: #fff;
+    font-size: 5rem;
+    text-transform: uppercase;
+}
+
+@media(max-width: 500px) {
+    .winning-message p {
+        font-size: 3rem;
+    }
+}

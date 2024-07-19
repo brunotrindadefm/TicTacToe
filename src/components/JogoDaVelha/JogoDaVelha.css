@@ -1,0 +1,116 @@
+.board {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    grid-template-columns: repeat(3, auto);
+}
+
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after {
+    background: #212121 !important;
+}
+
+.board.circle .cell:not(.x):not(.circle):hover::before,
+.board.circle .cell:not(.x):not(.circle):hover::after {
+    border: 6px solid #212121 !important;
+}
+
+.cell {
+    width: 150px;
+    height: 150px;
+    border: 3px solid #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cell:nth-child(1),
+.cell:nth-child(2),
+.cell:nth-child(3) {
+    border-top: none;
+}
+
+.cell:nth-child(1),
+.cell:nth-child(4),
+.cell:nth-child(7) {
+    border-left: none;
+}
+
+.cell:nth-child(9),
+.cell:nth-child(6),
+.cell:nth-child(3) {
+    border-right: none;
+}
+
+.cell:nth-child(7),
+.cell:nth-child(8),
+.cell:nth-child(9) {
+    border-bottom: none;
+}
+
+.cell.x::before,
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after {
+    content: "";
+    height: calc(110px * 0.15);
+    width: calc(130px * 0.9);
+    background: #fff;
+    position: absolute;
+}
+
+.cell.x::before,
+.board.x .cell:not(.x):not(.circle):hover::before {
+    transform: rotate(45deg);
+}
+
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::after {
+    transform: rotate(-45deg);
+}
+
+.cell.circle::before,
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::before,
+.board.cicle .cell:not(.x):not(.circle):hover::after {
+    content: "";
+    height: calc(110px * 0.9);
+    width: calc(110px * 0.9);
+    border-radius: 50%;
+    border: 6px solid #fff;
+    position: absolute;
+}
+
+.cell.x,
+.cell.circle {
+    cursor: not-allowed;
+}
+
+@media(max-width: 500px) {
+    .cell {
+        width: 100px;
+        height: 100px;
+    }
+
+    .cell.x::before,
+    .cell.x::after,
+    .board.x .cell:not(.x):not(.circle):hover::before,
+    .board.x .cell:not(.x):not(.circle):hover::after {
+        content: "";
+        height: calc(90px * 0.15);
+        width: calc(100px * 0.9);
+    }
+
+    .cell.circle::before,
+    .cell.circle::after,
+    .board.circle .cell:not(.x):not(.circle):hover::before,
+    .board.cicle .cell:not(.x):not(.circle):hover::after {
+        content: "";
+        height: calc(80px * 0.9);
+        width: calc(80px * 0.9);
+    }
+}
