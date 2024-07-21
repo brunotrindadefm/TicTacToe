@@ -1,94 +1,108 @@
 import React, { useEffect } from 'react'
 import './JogoDaVelha.css'
 
-const JogoDaVelha = ({onWin, resetGame}) => {
+const JogoDaVelha = ({ onWin, resetGame }) => {
 
+
+  // UseEffect usado para inicializar o jogo da velha e lidar com o estado do jogo
   useEffect(() => {
     const cellElements = document.querySelectorAll("[data-cell]");
     const board = document.querySelector('[data-board]');
 
     let isXTurn;
-    let isGameOver = false;
 
+    // Combinações para possíveis vitórias
     const winningCombinations = [
       // horizontal
-      [0,1,2],
-      [3,4,5],
-      [6,7,8],
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
       // vertical
-      [0,3,6],
-      [1,4,7],
-      [2,5,8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
       // diagonal 
-      [0,4,8],
-      [2,4,6]
+      [0, 4, 8],
+      [2, 4, 6]
     ];
 
     const startGame = () => {
+      // Adiciona no board a classe x, para ter o efeito de hover
+      board.classList.add('x')
+      // Adiciona um evento de clique a cada cell e chama a função handleClick
       for (const cell of cellElements) {
         cell.addEventListener("click", handleClick, { once: true })
       };
 
       isXTurn = true;
-      isGameOver = false;
-
-      board.classList.add('x')
     };
 
+    // Função do fim de jogo
+    // Se isDraw for verdadeiro o jogo termina empatado, se não, 
+    // pega em qual turno estava quando alguma classe esteve em alguma das combinações de vitória 
     const endGame = (isDraw) => {
-        if(isDraw) {
-          onWin('empate!')
-        } else {
-          onWin(isXTurn ? 'x venceu!' : 'o venceu!')
-        }
-        isGameOver = true;
-    } 
+      if (isDraw) {
+        onWin('empate!')
+      } else {
+        onWin(isXTurn ? 'x venceu!' : 'o venceu!')
+      }
+    }
 
+    // Esta função verifica se o jogador atual (X ou O) tem uma combinação vencedora.
+    // Ela usa o método some para verificar se alguma das winningCombinations é verdadeira para o jogador atual. 
+    // Para cada combinação, o método every verifica se todas as cell na combinação contêm a classe do jogador atual (currentPlayer).
     const checkForWin = (currentPlayer) => {
       return winningCombinations.some(combination => {
         return combination.every(index => {
           return cellElements[index].classList.contains(currentPlayer);
         })
       });
-   };
+    };
 
-   const checkForDraw = () => {
-    return [...cellElements].every((cell) => {
-      return cell.classList.contains('x') || cell.classList.contains('circle');
-    });
+    // Se todos os cell estiverem com a classe X ou O, e não estavam nas combinações de vitória
+    // checkForDraw retorna true
+    const checkForDraw = () => {
+      return [...cellElements].every((cell) => {
+        return cell.classList.contains('x') || cell.classList.contains('circle');
+      });
+    };
+
+
+  // Função para trocar turnos
+  const swapTurns = () => {
+    // se isXTurn for verdadeiro vira falso, vice versa
+    isXTurn = !isXTurn;
+
+    board.classList.remove('circle');
+    board.classList.remove('x')
+
+    if (isXTurn) {
+      // Se isXTurn for true, ou seja, está no turno do X adiciona a classe x ao cell
+      board.classList.add('x')
+    } else {
+      // Se não estiver no turno do x, é adicionado a classe circle para o cell
+      board.classList.add('circle')
+    };
   };
 
-    const placeMark = (cell, classToAdd) => {
+  const handleClick = (e) => {
+
+    // cell será igual ao cell em qual foi ativado o evento (e) de clique
+    const cell = e.target;
+    // Se isXTurn for verdadeiro, classToAdd será igual x, se não, será igual circle
+    const classToAdd = isXTurn ? 'x' : 'circle';
+
+    // Determinando a classe do turno que estiver para o cell
       cell.classList.add(classToAdd);
-    };
 
-    const swapTurns = () => {
-      isXTurn = !isXTurn;
-
-      board.classList.remove('circle');
-      board.classList.remove('x')
-
-      if (isXTurn) {
-        board.classList.add('x')
-      } else {
-        board.classList.add('circle')
-      };
-    };
-
-    const handleClick = (e) => {
-      if (isGameOver) return;
-
-      const cell = e.target;
-      const classToAdd = isXTurn ? 'x' : 'circle';
-
-      placeMark(cell, classToAdd);
-
+      // Se houver vitória, o jogo acaba, e é passado como props a mensagem de vitória acompanhado se foi X ou O para o winningMessage
       const isWin = checkForWin(classToAdd);
       if (isWin) {
         endGame(false);
         return;
       }
 
+      // Se houver empate, o jogo acaba, e é passado como props a mensagem de empate para o winningMessage
       const isDraw = checkForDraw();
       if (isDraw) {
         endGame(true);
@@ -99,32 +113,31 @@ const JogoDaVelha = ({onWin, resetGame}) => {
 
     };
 
-    startGame();
-
-    return () => {
+    // Função para resetar o jogo quando acaba
+    const reset = () => {
       for (const cell of cellElements) {
+        // Remove todas as classes x e circle dos cell e remove o evento de clique
+        cell.classList.remove('x');
+        cell.classList.remove('circle');
         cell.removeEventListener('click', handleClick);
       }
     };
 
-  }, [onWin, resetGame]);
-
-  useEffect(() => {
+    // Se a props passada do app, que é acionada quando o botão resetar do winningMessage é clicado for true, o jogo reinicia
     if (resetGame) {
-      const cellElements = document.querySelectorAll('[data-cell]');
-      const board = document.querySelector('[data-board]');
-
-      for (const cell of cellElements) {
-        cell.classList.remove('x', 'circle');
-      }
-
+      reset();
+      startGame();
+    } else {
       startGame();
     }
-  }, [resetGame]);
+
+    startGame();
+
+  }, [onWin, resetGame]);
 
   return (
 
-    <div className='board' data-board>
+    <div className='board x' data-board>
       <div className="cell" data-cell></div>
       <div className="cell" data-cell></div>
       <div className="cell" data-cell></div>

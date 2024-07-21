@@ -14,7 +14,7 @@ function App() {
 
   const handleRestart = () => {
     setWinner(''); 
-    setReset(prevReset => !prevReset);
+    setReset(true);
   }
 
   return (
