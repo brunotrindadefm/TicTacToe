@@ -26,6 +26,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative; 
 }
 
 .cell:nth-child(1),
@@ -76,13 +77,14 @@
 .cell.circle::before,
 .cell.circle::after,
 .board.circle .cell:not(.x):not(.circle):hover::before,
-.board.cicle .cell:not(.x):not(.circle):hover::after {
+.board.circle .cell:not(.x):not(.circle):hover::after {
     content: "";
     height: calc(110px * 0.9);
     width: calc(110px * 0.9);
     border-radius: 50%;
     border: 6px solid #fff;
     position: absolute;
+    background: transparent;
 }
 
 .cell.x,
@@ -108,9 +110,10 @@
     .cell.circle::before,
     .cell.circle::after,
     .board.circle .cell:not(.x):not(.circle):hover::before,
-    .board.cicle .cell:not(.x):not(.circle):hover::after {
+    .board.circle .cell:not(.x):not(.circle):hover::after {
         content: "";
         height: calc(80px * 0.9);
         width: calc(80px * 0.9);
+        background: transparent;
     }
 }
