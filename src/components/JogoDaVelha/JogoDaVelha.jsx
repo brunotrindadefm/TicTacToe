@@ -50,7 +50,7 @@ const JogoDaVelha = ({ onWin, resetGame }) => {
       }
     }
 
-    // Esta função verifica se o jogador atual (X ou O) tem uma combinação vencedora.
+    // Esta função verifica se o jogador atual X ou O tem uma combinação vencedora.
     // Ela usa o método some para verificar se alguma das winningCombinations é verdadeira para o jogador atual. 
     // Para cada combinação, o método every verifica se todas as cell na combinação contêm a classe do jogador atual (currentPlayer).
     const checkForWin = (currentPlayer) => {
